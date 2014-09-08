@@ -59,6 +59,7 @@ cmake -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS=
 
 make -j2
 make install
+set +e
 make test
 
 rc=$?
