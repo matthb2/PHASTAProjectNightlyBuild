@@ -18,7 +18,7 @@ fi
 
 echo $COMPILER
 if [[ $COMPILER == "pgi" ]] ; then
-soft add +openmpi-pgi
+soft add +openmpi-pgi-1.6.5-thread
 soft add +pgi-64bit
 export FLAGS=""
 fi
@@ -33,9 +33,10 @@ soft add +gcc-4.8.2
 export FLAGS="-Wall -Wextra -pedantic -fsanitize=address"
 fi
 if [[ $COMPILER == "sun" ]] ; then
-soft add +openmpi-sun
+soft add +openmpi-sun-1.6.5-thread
 soft add +sunstudio-12.3
-export FLAGS=""
+export OMPI_CXX="sunCC -library=stlport4 "
+export FLAGS="$FLAGS "
 fi
 if [[ $COMPILER == "clang" ]] ; then
 soft add +openmpi-gnu-1.6.5-thread
