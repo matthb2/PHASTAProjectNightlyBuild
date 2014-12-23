@@ -25,12 +25,12 @@ fi
 if [[ $COMPILER == "gcc" ]] ; then
 soft add +openmpi-gnu482-1.6.5-thread
 soft add +gcc-4.8.2
-export FLAGS="-Wall -Wextra -pedantic"
+export FLAGS="-Wall -Wextra -pedantic -Wno-long-long"
 fi
 if [[ $COMPILER == "gccsan" ]] ; then
 soft add +openmpi-gnu482-1.6.5-thread
 soft add +gcc-4.8.2
-export FLAGS="-Wall -Wextra -pedantic -fsanitize=address"
+export FLAGS="-Wall -Wextra -pedantic -Wno-long-long -fsanitize=address"
 fi
 if [[ $COMPILER == "sun" ]] ; then
 soft add +openmpi-sun-1.6.5-thread
