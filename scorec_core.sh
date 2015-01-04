@@ -37,6 +37,8 @@ fi
 if [[ $COMPILER == "gcctsan" ]] ; then
 soft add +openmpi-gnu482-1.6.5-thread
 soft add +gcc-4.9.1
+export ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu491-ompi-tsan
+export PARMETIS=/usr/local/parmetis/4.0.3-gnu491-ompi-1.6.5-64bitidx-tsan
 export FLAGS="$FLAGS -Wall -Wextra -pedantic -pie -fPIC -fsanitize=thread"
 export TSAN_OPTIONS="history_size=7 verbosity=2"
 fi
