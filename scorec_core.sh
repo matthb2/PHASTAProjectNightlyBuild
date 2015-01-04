@@ -31,7 +31,18 @@ export FLAGS="$FLAGS -Wall -Wextra -pedantic"
 fi
 if [[ $COMPILER == "gccsan" ]] ; then
 soft add +openmpi-gnu482-1.6.5-thread
-soft add +gcc-4.8.2
+soft add +gcc-4.9.1
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=undefined"
+fi
+if [[ $COMPILER == "gcctsan" ]] ; then
+soft add +openmpi-gnu482-1.6.5-thread
+soft add +gcc-4.9.1
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=thread"
+export TSAN_OPTIONS="history_size=7 verbosity=2"
+fi
+if [[ $COMPILER == "gccasan" ]] ; then
+soft add +openmpi-gnu482-1.6.5-thread
+soft add +gcc-4.9.1
 export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=address"
 fi
 if [[ $COMPILER == "sun" ]] ; then
