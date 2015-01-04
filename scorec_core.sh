@@ -37,7 +37,7 @@ fi
 if [[ $COMPILER == "gcctsan" ]] ; then
 soft add +openmpi-gnu482-1.6.5-thread
 soft add +gcc-4.9.1
-export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=thread"
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -pie -fPIC -fsanitize=thread"
 export TSAN_OPTIONS="history_size=7 verbosity=2"
 fi
 if [[ $COMPILER == "gccasan" ]] ; then
