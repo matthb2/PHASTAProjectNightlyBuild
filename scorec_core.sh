@@ -120,6 +120,10 @@ export OMPI_F90=gfortran
 export FLAGS="$FLAGS -Wall -Wextra"
 fi
 
+if [[ `hostname` == "buildbox-fbsd" ]] ; then
+  PARMETIS=/opt//parmetis/4.0.3-ompi_182-gcc49
+  ZOLTAN=/opt/zoltan/3.8-ompi182-gcc49
+fi
 
 rm -rf build prefix
 mkdir build
