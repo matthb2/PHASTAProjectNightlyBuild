@@ -9,6 +9,7 @@ PARMETIS=/opt//parmetis/4.0.3-ompi_182-gcc49
 ZOLTAN=/opt/zoltan/3.8-ompi182-gcc49
 LDF="-DCMAKE_EXE_LINKER_FLAGS=' -lexecinfo '"
 FLAGS="-lexecinfo"
+WANT_THREADS=OFF #BSD Box only has two cores, and "core" has issues
 function soft {
 	echo "skipping soft"
 }
@@ -16,15 +17,17 @@ else
 PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
 ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
 LDF=""
+WANT_THREADS=ON
 fi
 
 echo $COMPILER
 
 if [[ $COMPILER == "pgi" ]] ; then
+ WANT_THREADS=OFF #PGIs std::allocator is not thread safe
  if [[ $MPIIMPL == "openmpi" ]] ; then
   PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
   ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
-  soft add +openmpi-pgi-1.6.5-thread 
+  soft add +openmpi-pgi-1.8.4-thread
  fi
  if [[ $MPIIMPL == "mpich" ]] ; then
   PARMETIS=/usr/local/parmetis/4.0.3-pgi410-mpich-3.1.3-64bitidx
@@ -67,7 +70,7 @@ fi
 
 if [[ $COMPILER == "gcctsan" ]] ; then
  if [[ $MPIIMPL == "openmpi" ]] ; then
-  soft add +openmpi-gnu482-1.6.5-thread
+  soft add +openmpi-gnu-1.8.4-thread
   PARMETIS=/usr/local/parmetis/4.0.3-gnu491-ompi-1.6.5-64bitidx-tsan
   ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu491-ompi-tsan
  fi
@@ -132,9 +135,9 @@ cd build
 
 svn co http://redmine.scorec.rpi.edu/anonsvn/meshes test_meshes
 
-cmake -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS="$FLAGS" -DCMAKE_INSTALL_PREFIX=$WK/prefix -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpicxx -DIS_TESTING=True -DENABLE_THREADS=ON -DMETIS_LIBRARY=$PARMETIS/lib/libmetis.a -DPARMETIS_LIBRARY="$PARMETIS/lib/libparmetis.a" -DPARMETIS_INCLUDE_DIR=$PARMETIS/include -DZOLTAN_LIBRARY=$ZOLTAN/lib/libzoltan.a -DZOLTAN_INCLUDE_DIR=$ZOLTAN/include -DMESHES=$PWD/test_meshes -DENABLE_ZOLTAN=ON ../core
+cmake -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS="$FLAGS" -DCMAKE_INSTALL_PREFIX=$WK/prefix -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpicxx -DIS_TESTING=True -DENABLE_THREADS=$WANT_THREADS -DMETIS_LIBRARY=$PARMETIS/lib/libmetis.a -DPARMETIS_LIBRARY="$PARMETIS/lib/libparmetis.a" -DPARMETIS_INCLUDE_DIR=$PARMETIS/include -DZOLTAN_LIBRARY=$ZOLTAN/lib/libzoltan.a -DZOLTAN_INCLUDE_DIR=$ZOLTAN/include -DMESHES=$PWD/test_meshes -DENABLE_ZOLTAN=ON ../core
 
-make -j6
+make -j2
 make install
 #set +e
 #make test
