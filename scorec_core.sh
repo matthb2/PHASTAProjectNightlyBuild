@@ -24,6 +24,7 @@ echo $COMPILER
 
 if [[ $COMPILER == "pgi" ]] ; then
  WANT_THREADS=OFF #PGIs std::allocator is not thread safe
+ EXTRA_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/bzip2/1.0.6-pic"
  if [[ $MPIIMPL == "openmpi" ]] ; then
   PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
   ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
@@ -69,6 +70,7 @@ export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=undefined"
 fi
 
 if [[ $COMPILER == "gcctsan" ]] ; then
+ EXTRA_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/bzip2/1.0.6-pic"
  if [[ $MPIIMPL == "openmpi" ]] ; then
   soft add +openmpi-gnu-1.8.4-thread
   PARMETIS=/usr/local/parmetis/4.0.3-gnu491-ompi-1.6.5-64bitidx-tsan
@@ -135,7 +137,7 @@ cd build
 
 svn co --non-interactive --trust-server-cert https://redmine.scorec.rpi.edu/anonsvn/meshes test_meshes
 
-cmake -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS="$FLAGS" -DCMAKE_INSTALL_PREFIX=$WK/prefix -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpicxx -DIS_TESTING=True -DENABLE_THREADS=$WANT_THREADS -DMETIS_LIBRARY=$PARMETIS/lib/libmetis.a -DPARMETIS_LIBRARY="$PARMETIS/lib/libparmetis.a" -DPARMETIS_INCLUDE_DIR=$PARMETIS/include -DZOLTAN_LIBRARY=$ZOLTAN/lib/libzoltan.a -DZOLTAN_INCLUDE_DIR=$ZOLTAN/include -DMESHES=$PWD/test_meshes -DENABLE_ZOLTAN=ON -DPCU_COMPRESS=ON ../core
+cmake -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS="$FLAGS" -DCMAKE_INSTALL_PREFIX=$WK/prefix -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpicxx -DIS_TESTING=True -DENABLE_THREADS=$WANT_THREADS -DMETIS_LIBRARY=$PARMETIS/lib/libmetis.a -DPARMETIS_LIBRARY="$PARMETIS/lib/libparmetis.a" -DPARMETIS_INCLUDE_DIR=$PARMETIS/include -DZOLTAN_LIBRARY=$ZOLTAN/lib/libzoltan.a -DZOLTAN_INCLUDE_DIR=$ZOLTAN/include -DMESHES=$PWD/test_meshes -DENABLE_ZOLTAN=ON -DPCU_COMPRESS=ON $EXTRA_CMAKE_FLAGS ../core
 
 make -j2
 make install
