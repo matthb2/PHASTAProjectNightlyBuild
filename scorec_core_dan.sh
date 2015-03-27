@@ -48,7 +48,9 @@ fi
 
 rm -rf build prefix
 
-svn co --non-interactive --trust-server-cert https://redmine.scorec.rpi.edu/anonsvn/meshes test_meshes
+wget http://www.scorec.rpi.edu/pumi/pumi_test_meshes.tar.gz
+tar xvvzf pumi_test_meshes.tar.gz
+mv meshes test_meshes
 
 export CMAKE_PREFIX_PATH=$PARMETIS:$ZOLTAN:$CMAKE_PREFIX_PATH
 

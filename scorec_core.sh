@@ -10,6 +10,7 @@ ZOLTAN=/opt/zoltan/3.8-ompi182-gcc49
 LDF="-DCMAKE_EXE_LINKER_FLAGS=' -lexecinfo '"
 FLAGS="-lexecinfo"
 WANT_THREADS=OFF #BSD Box only has two cores, and "core" has issues
+echo 'WARNING: NOT ACTUALLY BUILDING THREAD SUPPORT'
 function soft {
 	echo "skipping soft"
 }
@@ -17,7 +18,7 @@ else
 PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
 ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
 LDF=""
-WANT_THREADS=ON
+WANT_THREADS=$THREADS
 fi
 
 echo $COMPILER
@@ -135,9 +136,10 @@ mkdir build
 export WK=$PWD
 cd build
 
-svn co --non-interactive --trust-server-cert https://redmine.scorec.rpi.edu/anonsvn/meshes test_meshes
+wget http://www.scorec.rpi.edu/pumi/pumi_test_meshes.tar.gz
+tar xvvzf pumi_test_meshes.tar.gz
 
-cmake -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS="$FLAGS" -DCMAKE_INSTALL_PREFIX=$WK/prefix -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpicxx -DIS_TESTING=True -DENABLE_THREADS=$WANT_THREADS -DMETIS_LIBRARY=$PARMETIS/lib/libmetis.a -DPARMETIS_LIBRARY="$PARMETIS/lib/libparmetis.a" -DPARMETIS_INCLUDE_DIR=$PARMETIS/include -DZOLTAN_LIBRARY=$ZOLTAN/lib/libzoltan.a -DZOLTAN_INCLUDE_DIR=$ZOLTAN/include -DMESHES=$PWD/test_meshes -DENABLE_ZOLTAN=ON -DPCU_COMPRESS=ON $EXTRA_CMAKE_FLAGS ../core
+cmake -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS="$FLAGS" -DCMAKE_INSTALL_PREFIX=$WK/prefix -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpicxx -DIS_TESTING=True -DENABLE_THREADS=$WANT_THREADS -DMETIS_LIBRARY=$PARMETIS/lib/libmetis.a -DPARMETIS_LIBRARY="$PARMETIS/lib/libparmetis.a" -DPARMETIS_INCLUDE_DIR=$PARMETIS/include -DZOLTAN_LIBRARY=$ZOLTAN/lib/libzoltan.a -DZOLTAN_INCLUDE_DIR=$ZOLTAN/include -DMESHES=$PWD/meshes -DENABLE_ZOLTAN=ON -DPCU_COMPRESS=ON $EXTRA_CMAKE_FLAGS ../core
 
 make -j2
 make install
