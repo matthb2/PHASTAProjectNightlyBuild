@@ -85,5 +85,5 @@ make install
 #rc=$?
 #echo "Cating the test log"
 #cat ./Testing/Temporary/LastTest.log
-ctest -VV
+ctest -VV --timeout 5000
 #exit $rc

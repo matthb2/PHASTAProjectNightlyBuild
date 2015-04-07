@@ -54,7 +54,7 @@ mv meshes test_meshes
 
 export CMAKE_PREFIX_PATH=$PARMETIS:$ZOLTAN:$CMAKE_PREFIX_PATH
 
-ctest -VV -D Nightly -S core/cdash/colorado.cmake \
+ctest -VV --timeout 5000 -D Nightly -S core/cdash/colorado.cmake \
   -D CTEST_SITE:STRING=`hostname` \
   -D CTEST_BUILD_NAME:STRING=`hostname`-$COMPILER \
   -D CTEST_DASHBOARD_ROOT:STRING=$PWD \
