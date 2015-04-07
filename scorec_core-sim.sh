@@ -30,35 +30,114 @@ SIM_BASE_PATH=`dirname $TMPPATH`
 fi
 
 echo $COMPILER
+
 if [[ $COMPILER == "pgi" ]] ; then
-soft add +openmpi-pgi-1.6.5-thread
+ WANT_THREADS=OFF #PGIs std::allocator is not thread safe
+ EXTRA_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/bzip2/1.0.6-pic"
+ if [[ $MPIIMPL == "openmpi" ]] ; then
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
+  soft add +openmpi-pgi-1.8.4-thread
+ fi
+ if [[ $MPIIMPL == "mpich" ]] ; then
+  PARMETIS=/usr/local/parmetis/4.0.3-pgi410-mpich-3.1.3-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-pgi410-mpich313 
+  soft add +mpich-pgi410-3.1.3
+ fi
 soft add +pgi-64bit
 export FLAGS="$FLAGS "
 fi
+
 if [[ $COMPILER == "gcc" ]] ; then
-soft add +openmpi-gnu482-1.6.5-thread
-soft add +gcc-4.8.2
+ if [[ $MPIIMPL == "openmpi" ]] ; then
+  soft add +openmpi-gnu482-1.6.5-thread
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi 
+ fi
+ if [[ $MPIIMPL == "mpich" ]] ; then 
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu-mpich-3.1.3-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu-mpich313
+  soft add +mpich-gnu491-3.1.3 
+ fi	
+soft add +gcc-4.9.1
 export FLAGS="$FLAGS -Wall -Wextra -pedantic"
 fi
+
 if [[ $COMPILER == "gccsan" ]] ; then
-soft add +openmpi-gnu482-1.6.5-thread
-soft add +gcc-4.8.2
+ if [[ $MPIIMPL == "openmpi" ]] ; then
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
+  soft add +openmpi-gnu482-1.6.5-thread
+ fi
+ if [[ $MPIIMPL == "mpich" ]] ; then
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu-mpich-3.1.3-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu-mpich313
+  soft add +mpich-gnu491-3.1.3
+ fi	
+soft add +gcc-4.9.1
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=undefined"
+fi
+
+if [[ $COMPILER == "gcctsan" ]] ; then
+ EXTRA_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/bzip2/1.0.6-pic"
+ if [[ $MPIIMPL == "openmpi" ]] ; then
+  soft add +openmpi-gnu-1.8.4-thread
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu491-ompi-1.6.5-64bitidx-tsan
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu491-ompi-tsan
+ fi
+ if [[ $MPIIMPL == "mpich" ]] ; then 
+ 	PARMETIS=/usr/local/parmetis/4.0.3-gnu491-mpich-3.1.3-64bitidx-tsan
+ 	ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu491-mpich313-tsan
+ 	soft add +mpich-gnu491-3.1.3
+ fi	
+soft add +gcc-4.9.1
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -pie -fPIC -fsanitize=thread"
+export TSAN_OPTIONS="history_size=7 verbosity=2"
+fi
+
+if [[ $COMPILER == "gccasan" ]] ; then
+ if [[ $MPIIMPL == "openmpi" ]] ; then
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
+  soft add +openmpi-gnu482-1.6.5-thread
+ fi
+ if [[ $MPIIMPL == "mpich" ]] ; then
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu-mpich-3.1.3-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu-mpich313
+  soft add +mpich-gnu491-3.1.3
+ fi	
+soft add +gcc-4.9.1
 export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=address"
 fi
+
 if [[ $COMPILER == "sun" ]] ; then
 soft add +openmpi-sun-1.6.5-thread
 soft add +sunstudio-12.3
 export OMPI_CXX="sunCC -library=stlport4 "
 export FLAGS="$FLAGS "
 fi
+
 if [[ $COMPILER == "clang" ]] ; then
-soft add +openmpi-gnu-1.6.5-thread
+ if [[ $MPIIMPL == "openmpi" ]] ; then
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
+  soft add +openmpi-gnu-1.6.5-thread
+ fi
+ if [[ $MPIIMPL == "mpich" ]] ; then
+  PARMETIS=/usr/local/parmetis/4.0.3-gnu-mpich-3.1.3-64bitidx
+  ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu-mpich313
+  soft add +mpich-gnu-3.1.3
+ fi
 export OMPI_CC=clang
 export OMPI_CXX=clang++
 export OMPI_F90=gfortran
 export FLAGS="$FLAGS -Wall -Wextra"
 fi
 
+if [[ `hostname` == "buildbox-fbsd" ]] ; then
+  PARMETIS=/opt//parmetis/4.0.3-ompi_182-gcc49
+  ZOLTAN=/opt/zoltan/3.8-ompi182-gcc49
+fi
 
 rm -rf build prefix PartitionWrapper
 cp -rv $SIM_BASE_PATH/code/PartitionWrapper ./
