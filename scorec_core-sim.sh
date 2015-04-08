@@ -144,7 +144,7 @@ fi
 rm -rf build prefix PartitionWrapper
 cp -rv $SIM_BASE_PATH/code/PartitionWrapper ./
 cd PartitionWrapper
-make CC=mpicc CXX=mpicxx PARALLEL=mpich -f Makefile.custom
+make CC=mpicc CXX=mpicxx PARALLEL=mpich OPTFLAGS="-fPIC" -f Makefile.custom
 cd ../
 
 mkdir build
