@@ -1,8 +1,8 @@
 #//#!bash -l
 set -x
 set -e
-SIM_SOFT="+simmodsuite-9.0-140927"
-SIM_CONF_FLAG="-DSIM_PARASOLID_VERSION=260"
+SIM_SOFT="+simmodsuite-9.0-150430"
+SIM_CONF_FLAG="-DSIM_PARASOLID_VERSION=270"
 
 if [[ `hostname` == "buildbox-fbsd" ]] ; then
 export LD_LIBRARY_PATH=/opt/hwloc/1.9.1-gcc49/lib/:/opt/openmpi/1.8.2-gcc49-thread/lib:/usr/local/lib/gcc49:$LD_LIBRARY_PATH
