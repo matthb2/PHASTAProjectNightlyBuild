@@ -24,6 +24,7 @@ cd build
 make install
 
 rc=$?
+set +e
 echo "Cat'ing the test log"
 cat ./Testing/Temporary/LastTest.log
 
