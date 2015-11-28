@@ -2,6 +2,7 @@
 set -x
 set -e
 
+rm -f viznodes_deps.sh
 wget http://fluid.colorado.edu/~matthb2/buildscripts/viznodes_deps.sh
 source viznodes_deps.sh
 
