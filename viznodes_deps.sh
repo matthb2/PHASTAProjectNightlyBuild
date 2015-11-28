@@ -36,6 +36,7 @@ echo $COMPILER
 if [[ $COMPILER == "pgi" ]] ; then
  WANT_THREADS=OFF #PGIs std::allocator is not thread safe
  EXTRA_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/bzip2/1.0.6-pic"
+ EXTRA_PREFIX_PATH='/usr/local/bzip2/1.0.6-pic'
  if [[ $MPIIMPL == "openmpi" ]] ; then
   PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
   ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
@@ -82,6 +83,7 @@ fi
 
 if [[ $COMPILER == "gcctsan" ]] ; then
  EXTRA_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/bzip2/1.0.6-pic"
+ EXTRA_PREFIX_PATH='/usr/local/bzip2/1.0.6-pic'
  if [[ $MPIIMPL == "openmpi" ]] ; then
   soft add +openmpi-gnu-1.8.4-thread
   PARMETIS=/usr/local/parmetis/4.0.3-gnu491-ompi-1.6.5-64bitidx-tsan
