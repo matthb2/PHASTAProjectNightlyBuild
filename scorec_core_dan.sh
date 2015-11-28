@@ -1,10 +1,11 @@
 #//#!bash -l
 set +x
 
+rm -f viznodes_deps.sh
 wget http://fluid.colorado.edu/~matthb2/buildscripts/viznodes_deps.sh
 source viznodes_deps.sh
 
-rm -rf build prefix
+rm -rf build prefix meshes test_meshes
 
 wget http://www.scorec.rpi.edu/pumi/pumi_test_meshes.tar.gz
 tar xvvzf pumi_test_meshes.tar.gz
