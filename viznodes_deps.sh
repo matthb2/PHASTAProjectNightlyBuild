@@ -63,7 +63,7 @@ if [[ $COMPILER == "gcc" ]] ; then
   soft add +mpich-gnu491-3.1.3 
  fi	
 soft add +gcc-4.9.1
-export FLAGS="$FLAGS -Wall -Wextra -pedantic"
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -Wno-long-long"
 fi
 
 if [[ $COMPILER == "gccsan" ]] ; then
@@ -78,7 +78,7 @@ if [[ $COMPILER == "gccsan" ]] ; then
   soft add +mpich-gnu491-3.1.3
  fi	
 soft add +gcc-4.9.1
-export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=undefined"
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=undefined -Wno-long-long"
 fi
 
 if [[ $COMPILER == "gcctsan" ]] ; then
@@ -95,7 +95,7 @@ if [[ $COMPILER == "gcctsan" ]] ; then
  	soft add +mpich-gnu491-3.1.3
  fi	
 soft add +gcc-4.9.1
-export FLAGS="$FLAGS -Wall -Wextra -pedantic -pie -fPIC -fsanitize=thread"
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -pie -fPIC -fsanitize=thread -Wno-long-long"
 export TSAN_OPTIONS="history_size=7 verbosity=2"
 fi
 
@@ -111,7 +111,7 @@ if [[ $COMPILER == "gccasan" ]] ; then
   soft add +mpich-gnu491-3.1.3
  fi	
 soft add +gcc-4.9.1
-export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=address"
+export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=address -Wno-long-long"
 fi
 
 if [[ $COMPILER == "sun" ]] ; then
