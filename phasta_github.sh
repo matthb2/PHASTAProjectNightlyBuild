@@ -1,7 +1,7 @@
 #//#!bash -l
 
 set -x
-set -e
+set +e
 
 rm viznodes_deps.sh
 if [ ! -f `dirname $0`/viznodes_deps.sh ]; then
@@ -21,7 +21,9 @@ tar xvvzf phastaChefTests.tar.gz
 
 cd build
 
-cmake -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS="$FLAGS" -DCMAKE_INSTALL_PREFIX=$WK/prefix -DPHASTA_COMPRESSIBLE=ON -DPHASTA_TESTING=ON -DCASES=$WK/phastaChefTests $EXTRA_CMAKE_FLAGS ../phasta
+set -e
+
+cmake -DCMAKE_BULID_TYPE=$BUILDTYPE -DCMAKE_C_FLAGS="$FLAGS" -DCMAKE_CXX_FLAGS="$FLAGS" -DCMAKE_Fortran_FLAGS="$FLAGS" -DCMAKE_INSTALL_PREFIX=$WK/prefix -DPHASTA_COMPRESSIBLE=ON -DPHASTA_TESTING=ON -DCASES=$WK/phastaChefTests $EXTRA_CMAKE_FLAGS ../phasta
 
 make -j2
 #make install
