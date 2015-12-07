@@ -34,6 +34,9 @@ fi
 echo $COMPILER
 
 if [[ $COMPILER == "pgi" ]] ; then
+ export CC=pgcc
+ export CXX=pgCC
+ export FC=pgfortran
  WANT_THREADS=OFF #PGIs std::allocator is not thread safe
  EXTRA_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/bzip2/1.0.6-pic"
  EXTRA_PREFIX_PATH='/usr/local/bzip2/1.0.6-pic'
@@ -52,6 +55,9 @@ export FLAGS="$FLAGS "
 fi
 
 if [[ $COMPILER == "gcc" ]] ; then
+  export CC=gcc
+  export CXX=g++
+  export FC=gfortran
  if [[ $MPIIMPL == "openmpi" ]] ; then
   soft add +openmpi-gnu482-1.6.5-thread
   PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
@@ -67,6 +73,9 @@ export FLAGS="$FLAGS -Wall -Wextra -pedantic -Wno-long-long"
 fi
 
 if [[ $COMPILER == "gccsan" ]] ; then
+  export CC=gcc
+  export CXX=g++
+  export FC=gfortran
  if [[ $MPIIMPL == "openmpi" ]] ; then
   PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
   ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
@@ -82,6 +91,9 @@ export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=undefined -Wno-long-long
 fi
 
 if [[ $COMPILER == "gcctsan" ]] ; then
+ export CC=gcc
+ export CXX=g++
+ export FC=gfortran
  EXTRA_CMAKE_FLAGS="-DCMAKE_PREFIX_PATH=/usr/local/bzip2/1.0.6-pic"
  EXTRA_PREFIX_PATH='/usr/local/bzip2/1.0.6-pic'
  if [[ $MPIIMPL == "openmpi" ]] ; then
@@ -100,6 +112,9 @@ export TSAN_OPTIONS="history_size=7 verbosity=2"
 fi
 
 if [[ $COMPILER == "gccasan" ]] ; then
+ export CC=gcc
+ export CXX=g++
+ export FC=gfortran
  if [[ $MPIIMPL == "openmpi" ]] ; then
   PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
   ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
@@ -115,6 +130,9 @@ export FLAGS="$FLAGS -Wall -Wextra -pedantic -fsanitize=address -Wno-long-long"
 fi
 
 if [[ $COMPILER == "sun" ]] ; then
+export CC=suncc
+export CXX="sunCC -library=stlport4 "
+export FC=sunf90
 soft add +openmpi-sun-1.6.5-thread
 soft add +sunstudio-12.3
 export OMPI_CXX="sunCC -library=stlport4 "
@@ -122,6 +140,9 @@ export FLAGS="$FLAGS "
 fi
 
 if [[ $COMPILER == "clang" ]] ; then
+ export CC=clang
+ export CXX=clang++
+ export FC=gfortran
  if [[ $MPIIMPL == "openmpi" ]] ; then
   PARMETIS=/usr/local/parmetis/4.0.3-gnu482-ompi-1.6.5-64bitidx
   ZOLTAN=/usr/local/zoltan/trilinos_scorec-11.0.3-gnu482-ompi
